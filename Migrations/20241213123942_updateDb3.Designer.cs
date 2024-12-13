@@ -12,8 +12,8 @@ using parc;
 namespace parc.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241213085535_updateParc")]
-    partial class updateParc
+    [Migration("20241213123942_updateDb3")]
+    partial class updateDb3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace parc.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CratedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Location")
@@ -52,6 +52,54 @@ namespace parc.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Parcs");
+                });
+
+            modelBuilder.Entity("parc.Models.Salle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("ParcId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParcId");
+
+                    b.ToTable("Salles");
+                });
+
+            modelBuilder.Entity("parc.Models.Salle", b =>
+                {
+                    b.HasOne("parc.Models.Parc", "parc")
+                        .WithMany("Salles")
+                        .HasForeignKey("ParcId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("parc");
+                });
+
+            modelBuilder.Entity("parc.Models.Parc", b =>
+                {
+                    b.Navigation("Salles");
                 });
 #pragma warning restore 612, 618
         }

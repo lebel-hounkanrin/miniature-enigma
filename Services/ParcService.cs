@@ -21,7 +21,7 @@ public class ParcService
 
     public List<Parc> GetAll()
     {
-        return _context.Parcs.AsNoTracking().ToList();
+        return _context.Parcs.AsNoTracking().Include(s => s.Salles).ToList();
     }
 
     public Parc GetById(int id)

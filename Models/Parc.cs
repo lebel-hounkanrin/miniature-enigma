@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace parc.Models;
 
@@ -14,7 +15,14 @@ public class Parc
     [MaxLength(100)]
     public string Location { get; set; }
     
-    public DateTime CratedAt { get; set; }
+    [SwaggerSchema(ReadOnly = true)]
+    public ICollection<Salle>? Salles { get; set; } = new List<Salle>();
     
     public int OwnerId { get; set; }
+    
+    // public User Owner { get; set; } 
+    
+    public bool IsActive { get; set; } = true;
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

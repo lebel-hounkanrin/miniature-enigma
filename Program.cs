@@ -17,11 +17,14 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Description = "Api for parc management",
     });
+    options.EnableAnnotations();
 });
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 //configuring services
 builder.Services.AddScoped<ParcService>();
+builder.Services.AddScoped<SalleService>();
+builder.Services.AddScoped<DeviceService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
