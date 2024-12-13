@@ -1,4 +1,6 @@
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using parc;
+using parc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +16,12 @@ builder.Services.AddSwaggerGen(options =>
         Title = "GestParc Api",
         Version = "v1",
         Description = "Api for parc management",
-        // TermsOfService = "None"
     });
-    // var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    // options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
 });
 
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+//configuring services
+builder.Services.AddScoped<ParcService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -11,10 +11,12 @@ namespace parc.Controllers;
 public class ParcController: ControllerBase
 {
     private readonly ILogger<ParcController> _logger;
+    private readonly ParcService _parcService;
 
-    public ParcController(ILogger<ParcController> logger)
+    public ParcController(ParcService parcService)
     {
-        _logger = logger;
+        // _logger = logger;
+        _parcService = parcService;
     }
 
     [HttpGet(Name = "Get all parcs for current user")]
@@ -22,8 +24,8 @@ public class ParcController: ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     public ActionResult<List<Parc>> Get()
     {
-        _logger.LogInformation("Get all parcs for current user");
-        return ParcService.GetAll();
+        // _logger.LogInformation("Get all parcs for current user");
+        return _parcService.GetAll();
     }
 
     [HttpGet("{id}")]
@@ -32,7 +34,7 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Parc> Get(int id)
     {
-        return ParcService.GetById(id);
+        return _parcService.GetById(id);
     }
 
     [HttpPost]
@@ -40,9 +42,9 @@ public class ParcController: ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<Parc> Post(ParcDto parc)
+    public ActionResult<Parc> Post(Parc parc)
     {
-        return ParcService.Add(parc);
+        return _parcService.Add(parc);
     }
 
     [HttpPut("{id}")]

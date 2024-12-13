@@ -1,23 +1,32 @@
+using Microsoft.EntityFrameworkCore;
 using parc.Dto;
 using parc.Models;
 
 namespace parc.Services;
 
-public static class ParcService
+public class ParcService
 {
-    public static Parc Add(ParcDto parcDto)
+    private readonly AppDbContext _context;
+
+    public ParcService(AppDbContext context)
     {
-        return new Parc();
+        _context = context;
+    }
+    public Parc Add(Parc parcDto)
+    {
+        _context.Parcs.Add(parcDto);
+        _context.SaveChanges();
+        return parcDto;
     }
 
-    public static List<Parc> GetAll()
+    public List<Parc> GetAll()
     {
-        return new List<Parc>();
+        return _context.Parcs.AsNoTracking().ToList();
     }
 
-    public static Parc GetById(int id)
+    public Parc GetById(int id)
     {
-        return new Parc();
+        return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
     }
 
     public static Parc Update(int id, ParcDto parcDto)
