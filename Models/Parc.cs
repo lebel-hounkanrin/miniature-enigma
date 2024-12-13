@@ -14,7 +14,13 @@ public class Parc
     [MaxLength(100)]
     public string Location { get; set; }
     
-    public DateTime CratedAt { get; set; }
+    public ICollection<Salle>? Salles { get; set; } = new List<Salle>();
     
     public int OwnerId { get; set; }
+    
+    // public User Owner { get; set; } 
+    
+    public bool IsActive { get; set; } = true;
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

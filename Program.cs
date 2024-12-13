@@ -22,6 +22,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 //configuring services
 builder.Services.AddScoped<ParcService>();
+builder.Services.AddScoped<SalleService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
