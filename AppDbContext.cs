@@ -16,6 +16,7 @@ public class AppDbContext: DbContext
         base.OnModelCreating(modelBuilder);
         // modelBuilder.Entity<Device>().Property(p => p.Status).HasConversion<string>();
         // modelBuilder.Entity<Device>().Property(p => p.Type).HasConversion<string>();
+        modelBuilder.Entity<CustomUser>().Property(p => p.Role).HasConversion<string>();
         modelBuilder.Entity<Salle>().HasOne(s => s.Parc).WithMany(p => p.Salles).HasForeignKey(s => s.ParcId);
         modelBuilder.Entity<Device>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
     }
