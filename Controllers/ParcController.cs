@@ -1,6 +1,5 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using parc.Dto;
 using parc.Models;
 using parc.Services;
 
@@ -51,7 +50,7 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Parc))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<Parc> Put(int id, ParcDto parc)
+    public ActionResult<Parc> Put(int id, Parc parc)
     {
         return ParcService.Update(id, parc);
     }

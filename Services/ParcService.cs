@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using parc.Dto;
 using parc.Models;
 
 namespace parc.Services;
@@ -29,7 +28,7 @@ public class ParcService
         return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
     }
 
-    public static Parc Update(int id, ParcDto parcDto)
+    public static Parc Update(int id, Parc parcDto)
     {
         return new Parc();
     }
