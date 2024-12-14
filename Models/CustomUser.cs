@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using parc.Models.shared;
 using parc.Shared;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace parc.Models;
 
@@ -18,7 +19,7 @@ public class CustomUser
     
     public UserRole Role { get; set; }
 
-    [JsonIgnore]
+    [SwaggerSchema(WriteOnly = true)]
     public string Password { get; set; }
     public bool isActive { get; set; }
 }
