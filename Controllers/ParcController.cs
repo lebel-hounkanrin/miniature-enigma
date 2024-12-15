@@ -8,7 +8,7 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+[Authorize(requiredRole: "Admin")]
 public class ParcController: ControllerBase
 {
     private readonly ILogger<ParcController> _logger;
