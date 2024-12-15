@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using parc.Models.shared;
-using parc.Shared;
+using parc.Helpers;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace parc.Models;

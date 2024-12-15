@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace parc.Shared;
+namespace parc.Helpers;
 
 
 public class UniqueEmailAttribute : ValidationAttribute
