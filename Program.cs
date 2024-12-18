@@ -69,6 +69,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder
 //     };
 // });
 //configuring services
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ParcService>();
 builder.Services.AddScoped<SalleService>();
 builder.Services.AddScoped<DeviceService>();
