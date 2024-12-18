@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using parc.Models;
+using parc.Models.shared;
 
 namespace parc.Helpers;
 
@@ -20,13 +21,18 @@ public class AuthorizeAttribute: Attribute, IAuthorizationFilter
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }
         
+        Console.WriteLine(user.Role);
+        
         if (_requiredRole != null && user.Role.ToString() != _requiredRole)
         {
-            context.Result = new JsonResult(new { message = "Forbidden" })
+            if (user.Role.ToString().ToLower() != UserRole.SuperAdmin.ToString().ToLower())
             {
-                StatusCode = StatusCodes.Status403Forbidden
-            };
-            return;
+                context.Result = new JsonResult(new { message = "Forbidden" })
+                {
+                    StatusCode = StatusCodes.Status403Forbidden
+                };
+                return;
+            }
         }
     }
     

@@ -8,7 +8,7 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(requiredRole: "Admin")]
+[Authorize(requiredRole: "ParcAdmin")]
 public class ParcController: ControllerBase
 {
     private readonly ILogger<ParcController> _logger;
@@ -26,7 +26,8 @@ public class ParcController: ControllerBase
     public ActionResult<List<Parc>> Get()
     {
         // _logger.LogInformation("Get all parcs for current user");
-        return _parcService.GetAll();
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _parcService.GetAll(currentUser);
     }
 
     [HttpGet("{id}")]
@@ -35,7 +36,8 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Parc> Get(int id)
     {
-        return _parcService.GetById(id);
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _parcService.GetById(id, currentUser);
     }
 
     [HttpPost]
@@ -45,7 +47,8 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Parc> Post(Parc parc)
     {
-        return _parcService.Add(parc);
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _parcService.Add(parc, currentUser.Id);
     }
 
     [HttpPut("{id}")]

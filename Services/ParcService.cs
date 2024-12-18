@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using parc.Models;
+using parc.Models.shared;
 
 namespace parc.Services;
 
@@ -11,21 +12,26 @@ public class ParcService
     {
         _context = context;
     }
-    public Parc Add(Parc parcDto)
+    public Parc Add(Parc parcDto, int userId)
     {
+        parcDto.OwnerId = userId;
         _context.Parcs.Add(parcDto);
         _context.SaveChanges();
         return parcDto;
     }
 
-    public List<Parc> GetAll()
+    public List<Parc> GetAll(CustomUser user)
     {
-        return _context.Parcs.AsNoTracking().Include(s => s.Salles).ToList();
+        if(user.Role == UserRole.SuperAdmin)
+            return _context.Parcs.AsNoTracking().Include(s => s.Salles).ToList();
+        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.IsActive).ToList();
     }
 
-    public Parc GetById(int id)
+    public Parc GetById(int id, CustomUser user)
     {
-        return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
+        if(user.Role == UserRole.SuperAdmin)
+            return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
+        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).FirstOrDefault();
     }
 
     public static Parc Update(int id, Parc parcDto)
