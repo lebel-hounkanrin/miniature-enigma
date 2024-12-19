@@ -18,6 +18,7 @@ public class Parc
     [SwaggerSchema(ReadOnly = true)]
     public ICollection<Salle>? Salles { get; set; } = new List<Salle>();
     
+    [Required]
     public int OwnerId { get; set; }
     
     // public User Owner { get; set; } 

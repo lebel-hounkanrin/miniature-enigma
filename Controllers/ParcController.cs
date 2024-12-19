@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using parc.Dto;
+using parc.Helpers;
 using parc.Models;
 using parc.Services;
 
@@ -8,6 +8,7 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(requiredRole: "ParcAdmin")]
 public class ParcController: ControllerBase
 {
     private readonly ILogger<ParcController> _logger;
@@ -25,7 +26,8 @@ public class ParcController: ControllerBase
     public ActionResult<List<Parc>> Get()
     {
         // _logger.LogInformation("Get all parcs for current user");
-        return _parcService.GetAll();
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _parcService.GetAll(currentUser);
     }
 
     [HttpGet("{id}")]
@@ -34,7 +36,8 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Parc> Get(int id)
     {
-        return _parcService.GetById(id);
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _parcService.GetById(id, currentUser);
     }
 
     [HttpPost]
@@ -44,14 +47,15 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Parc> Post(Parc parc)
     {
-        return _parcService.Add(parc);
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _parcService.Add(parc, currentUser.Id);
     }
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Parc))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<Parc> Put(int id, ParcDto parc)
+    public ActionResult<Parc> Put(int id, Parc parc)
     {
         return ParcService.Update(id, parc);
     }
