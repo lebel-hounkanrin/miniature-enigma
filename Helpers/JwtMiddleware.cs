@@ -52,8 +52,7 @@ public class JwtMiddleware
         }
         catch
         {
-            //Do nothing if JWT validation fails
-            // user is not attached to context so the request won't have access to secure routes
+            context.Items["User"] = null;
         }
     }
 }
