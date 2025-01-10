@@ -68,6 +68,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder
 //         
 //     };
 // });
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 //configuring services
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ParcService>();
@@ -88,6 +92,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthentication();
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
