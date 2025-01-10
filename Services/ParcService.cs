@@ -31,7 +31,7 @@ public class ParcService
     {
         if(user.Role == UserRole.SuperAdmin)
             return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
-        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).FirstOrDefault();
+        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
     }
 
     public static Parc Update(int id, Parc parcDto)
