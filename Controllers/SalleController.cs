@@ -36,4 +36,15 @@ public class SalleController
         // _logger.LogInformation("Get all parcs for current user");
         return _salleService.GetAll();
     }
+    
+    
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Salle))]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<Salle> Get(int id)
+    {
+        // CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _salleService.GetById(id);
+    }
 }
