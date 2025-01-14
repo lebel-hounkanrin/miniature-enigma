@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using parc.Models;
 using parc.Services;
@@ -8,7 +9,7 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class DeviceController
+public class DeviceController: ControllerBase
 {
     
     private readonly ILogger<SalleController> _logger;
@@ -37,5 +38,20 @@ public class DeviceController
     {
         // _logger.LogInformation("Get all parcs for current user");
         return _deviceService.GetAll();
+    }
+    
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Device))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Update(int id, Device _device)
+    {
+        var device = _deviceService.GetById(id);
+        if (device == null)
+        {
+            return NotFound(new { message = "can not found device with this id." });
+        }
+        await _deviceService.Update(id, _device);
+        return Ok(new { message = $" Todo Item  with id {id} successfully updated" });
     }
 }
