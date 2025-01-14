@@ -21,7 +21,7 @@ public class Salle
     public int ParcId { get; set; }
     
     [JsonIgnore]
-    public Parc Parc { get; set; }
+    public Parc? Parc { get; set; }
     
     [SwaggerSchema(ReadOnly = true)] public ICollection<Device> Devices { get; set; } = new List<Device>();
     

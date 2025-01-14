@@ -16,7 +16,7 @@ public class CustomUser
     [UniqueEmail(ErrorMessage = "This email address is already registered.")]
     public string Email { get; set; }
     
-    public UserRole Role { get; set; }
+    public UserRole Role { get; set; } = UserRole.User;
 
     [SwaggerSchema(WriteOnly = true)]
     public string Password { get; set; }
