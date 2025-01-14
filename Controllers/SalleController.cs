@@ -1,5 +1,7 @@
 using System.Net.Mime;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using parc.Helpers;
 using parc.Models;
 using parc.Services;
 
@@ -7,7 +9,9 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class SalleController
+// [Authorize(requiredRole: "ParcAdmin")]
+
+public class SalleController: ControllerBase
 {
     private readonly ILogger<SalleController> _logger;
     private readonly SalleService _salleService;
@@ -46,5 +50,20 @@ public class SalleController
     {
         // CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
         return _salleService.GetById(id);
+    }
+    
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Salle))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Update(int id, Salle _salle)
+    {
+        var salle = _salleService.GetById(id);
+        if (salle == null)
+        {
+            return NotFound(new { message = "can not found with this id." });
+        }
+        await _salleService.Update(id, _salle);
+        return Ok(new { message = $" Todo Item  with id {id} successfully updated" });
     }
 }
