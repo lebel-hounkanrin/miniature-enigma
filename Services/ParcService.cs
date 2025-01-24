@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using parc.Dto;
 using parc.Models;
 using parc.Models.shared;
 
@@ -34,9 +35,18 @@ public class ParcService
         return _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
     }
 
-    public static Parc Update(int id, Parc parcDto)
+    public Parc Update(int id, UpdateParcDto? parcDto, CustomUser user)
     {
-        return new Parc();
+        if(user.Role == UserRole.SuperAdmin) {}
+        var parc = _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
+        if (parc != null)
+        {
+            if (parcDto.Name != null) parc.Name = parcDto.Name;
+            if(parcDto.Location != null)  parc.Location = parcDto.Location;
+            _context.SaveChanges();
+            return parc;
+        }
+        return null;
     }
 
     public static bool Delete(int id)

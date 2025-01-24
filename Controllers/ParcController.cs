@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
+using parc.Dto;
 using parc.Helpers;
 using parc.Models;
 using parc.Services;
@@ -71,11 +72,12 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Parc))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<Parc> Put(int id, Parc parc)
+    public ActionResult<Parc> Put(int id, UpdateParcDto parc)
     {
         try
         {
-            return ParcService.Update(id, parc);
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return _parcService.Update(id, parc, currentUser);
         }
         catch (Exception e)
         {
