@@ -31,27 +31,51 @@ public class UserController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<CustomUser> Post(CustomUser user)
     {
-        return _userService.Add(user);
+        try
+        {
+            return _userService.Add(user);
+        } 
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = $"An error occurred while creating user", error = ex.Message });
+
+        }
     }
 
  
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(AuthenticateRequest model)
     {
-        var response = await _userService.Authenticate(model);
+        try
+        {
+            var response = await _userService.Authenticate(model);
 
-        if (response == null)
-            return BadRequest(new { message = "Username or password is incorrect" });
+            if (response == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
 
-        return Ok(response);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to authenticate", error = ex.Message });
+
+        }
     }
 
     [Authorize]
     [HttpGet("profile")]
     public async Task<IActionResult> Profile()
     {
-        CustomUser user = (CustomUser)_httpContext.HttpContext.Items["User"];   
-        _logger.LogInformation($"User {user.Email} logged in");
-        return Ok(user);
+        try
+        {
+            CustomUser user = (CustomUser)_httpContext.HttpContext.Items["User"];
+            _logger.LogInformation($"User {user.Email} logged in");
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
