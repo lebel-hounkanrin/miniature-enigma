@@ -36,8 +36,16 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Parc> Get(int id)
     {
-        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-        return _parcService.GetById(id, currentUser);
+        try
+        {
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return _parcService.GetById(id, currentUser);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return StatusCode(500, new { message = $"An error occurred while trying to get parc", error = e.Message });
+        }
     }
 
     [HttpPost]
@@ -47,8 +55,16 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Parc> Post(Parc parc)
     {
-        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-        return _parcService.Add(parc, currentUser.Id);
+        try
+        {
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return Ok(_parcService.Add(parc, currentUser.Id));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return StatusCode(500, new { message = $"An error occurred while trying to create parc", error = e.Message });
+        }
     }
 
     [HttpPut("{id}")]
@@ -57,7 +73,14 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Parc> Put(int id, Parc parc)
     {
-        return ParcService.Update(id, parc);
+        try
+        {
+            return ParcService.Update(id, parc);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to update parc", error = e.Message });
+        }
     }
 
     [HttpDelete("{id}")]
@@ -66,6 +89,13 @@ public class ParcController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<bool> Delete(int id)
     {
-        return ParcService.Delete(id);
+        try
+        {
+            return ParcService.Delete(id);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to delete parc", error = e.Message });
+        }
     }
 }   
