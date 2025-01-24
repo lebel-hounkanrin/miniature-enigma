@@ -93,7 +93,8 @@ public class ParcController: ControllerBase
     {
         try
         {
-            return ParcService.Delete(id);
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return _parcService.Delete(id, currentUser);
         }
         catch (Exception e)
         {

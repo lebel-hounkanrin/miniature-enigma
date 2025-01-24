@@ -49,8 +49,27 @@ public class ParcService
         return null;
     }
 
-    public static bool Delete(int id)
+    public bool Delete(int id, CustomUser user)
     {
-        return true;
+        try
+        {
+            if (user.Role == UserRole.SuperAdmin)
+            {
+                var _parc =  _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
+                _context.Parcs.Remove(_parc);
+                _context.SaveChangesAsync();
+                return true;
+
+            }
+            var parc = _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
+            _context.Parcs.Remove(parc);
+            _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
