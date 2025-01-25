@@ -29,7 +29,15 @@ public class SalleController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Salle> Post(Salle salle)
     {
-        return _salleService.Add(salle);
+        try
+        {
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return _salleService.Add(salle, currentUser);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to create salle", error = e.Message });
+        }
     }
     
     [HttpGet(Name = "Get all salles")]

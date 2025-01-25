@@ -12,8 +12,10 @@ public class SalleService
     {
         _context = context;
     }
-    public Salle Add(Salle salle)
+    public Salle Add(Salle salle, CustomUser user)
     {
+        var parc = _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == salle.ParcId).FirstOrDefault();
+        if (parc == null) throw new UnauthorizedAccessException("You are not authorized to add salles to this parc.");
         _context.Salles.Add(salle);
         _context.SaveChanges();
         return salle;
