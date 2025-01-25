@@ -27,12 +27,19 @@ public class SalleController: ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public ActionResult<Salle> Post(Salle salle)
     {
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
             return _salleService.Add(salle, currentUser);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return StatusCode(403, new { message = "You are not authorized to add salles to this parc." });
+
+            // return Forbid("You are not authorized to add salles to this parc.");
         }
         catch (Exception e)
         {
