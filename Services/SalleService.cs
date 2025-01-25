@@ -27,6 +27,22 @@ public class SalleService
         return salles;
     }
     
+    public List<Salle> GetAllForParc(CustomUser user, int parcId)
+    {
+        var parc = _context.Parcs.FirstOrDefault(p => p.OwnerId == user.Id && p.Id == parcId);
+        if (parc == null)
+        {
+            return new List<Salle>();  
+        }
+
+        var salles = _context.Salles
+            .Where(s => s.ParcId == parcId)
+            .AsNoTracking()
+            .ToList();
+
+        return salles;
+    }
+    
     public Salle GetById(int id)
     {
         // if(user.Role == UserRole.SuperAdmin)

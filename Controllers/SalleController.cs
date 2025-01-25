@@ -35,11 +35,27 @@ public class SalleController: ControllerBase
     [HttpGet(Name = "Get all salles")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Parc>))]
     [Produces(MediaTypeNames.Application.Json)]
-    public ActionResult<List<Salle>> Get()
+    public ActionResult<List<Salle>> Get([FromQuery] int? parcId)
     {
         // _logger.LogInformation("Get all parcs for current user");
-        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-        return _salleService.GetAll(currentUser);
+        try
+        {
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            if (parcId.HasValue)
+            {
+                return Ok(_salleService.GetAllForParc(currentUser, parcId.Value));
+
+            }
+            else
+            {
+                return Ok(_salleService.GetAll(currentUser));
+            }
+            
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to get salles", error = e.Message });
+        }
     }
     
     
@@ -47,7 +63,7 @@ public class SalleController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Salle))]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<Salle> Get(int id)
+    public ActionResult<Salle> GetSingle(int id)
     {
         // CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
         return _salleService.GetById(id);
