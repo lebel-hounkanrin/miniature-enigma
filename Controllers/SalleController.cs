@@ -80,8 +80,8 @@ public class SalleController: ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<Salle> GetSingle(int id)
     {
-        // CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-        return _salleService.GetById(id);
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _salleService.GetById(currentUser, id);
     }
     
     [HttpPut("{id}")]
@@ -90,7 +90,9 @@ public class SalleController: ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Update(int id, Salle _salle)
     {
-        var salle = _salleService.GetById(id);
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+
+        var salle = _salleService.GetById(currentUser, id);
         if (salle == null)
         {
             return NotFound(new { message = "can not found with this id." });

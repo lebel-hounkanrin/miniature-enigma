@@ -45,11 +45,26 @@ public class SalleService
         return salles;
     }
     
-    public Salle GetById(int id)
+    public Salle GetById(CustomUser user, int id)
     {
-        // if(user.Role == UserRole.SuperAdmin)
-        //     return _context.Salles.AsNoTracking().SingleOrDefault(x => x.Id == id);
-        return _context.Salles.Where(s => s.Id == id).Include(s => s.Devices).FirstOrDefault();
+        // Récupérer la salle par ID
+        var salle = _context.Salles
+            .Include(s => s.Devices)  
+            .FirstOrDefault(s => s.Id == id);
+
+        if (salle == null)
+        {
+            return null; 
+        }
+
+        var parc = _context.Parcs.FirstOrDefault(p => p.OwnerId == user.Id && p.Id == salle.ParcId);
+
+        if (parc == null)
+        {
+            return null;
+        }
+
+        return salle;
     }
 
     public async Task<bool> Update(int id, Salle updateModel)
