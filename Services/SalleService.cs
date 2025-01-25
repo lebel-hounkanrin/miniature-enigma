@@ -19,9 +19,12 @@ public class SalleService
         return salle;
     }
     
-    public List<Salle> GetAll()
+    public List<Salle> GetAll(CustomUser user)
     {
-        return _context.Salles.AsNoTracking().ToList();
+        var parc = _context.Parcs.Where(p => p.OwnerId == user.Id);
+        var salles = _context.Salles.Where(
+                s => parc.Any(p => p.Id == s.Id)).AsNoTracking().ToList();
+        return salles;
     }
     
     public Salle GetById(int id)

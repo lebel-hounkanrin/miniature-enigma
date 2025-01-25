@@ -9,7 +9,7 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-// [Authorize(requiredRole: "ParcAdmin")]
+[Authorize(requiredRole: "ParcAdmin")]
 
 public class SalleController: ControllerBase
 {
@@ -38,7 +38,8 @@ public class SalleController: ControllerBase
     public ActionResult<List<Salle>> Get()
     {
         // _logger.LogInformation("Get all parcs for current user");
-        return _salleService.GetAll();
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        return _salleService.GetAll(currentUser);
     }
     
     
