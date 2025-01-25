@@ -37,13 +37,21 @@ public class ParcService
 
     public Parc Update(int id, UpdateParcDto? parcDto, CustomUser user)
     {
-        if(user.Role == UserRole.SuperAdmin) {}
+        if (user.Role == UserRole.SuperAdmin)
+        {
+            var _parc =  _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
+            _parc.Name = parcDto.Name ?? _parc.Name;
+            _parc.Location = parcDto.Location ?? _parc.Location;
+            _context.Parcs.Update(_parc);
+            return _parc;
+        }
         var parc = _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
         if (parc != null)
         {
             if (parcDto.Name != null) parc.Name = parcDto.Name;
             if(parcDto.Location != null)  parc.Location = parcDto.Location;
-            _context.SaveChanges();
+            _context.Parcs.Update(parc);
+            // _context.SaveChanges();
             return parc;
         }
         return null;
