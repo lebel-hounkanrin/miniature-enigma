@@ -43,6 +43,7 @@ public class ParcService
             _parc.Name = parcDto.Name ?? _parc.Name;
             _parc.Location = parcDto.Location ?? _parc.Location;
             _context.Parcs.Update(_parc);
+            _context.SaveChanges();
             return _parc;
         }
         var parc = _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
@@ -51,7 +52,7 @@ public class ParcService
             if (parcDto.Name != null) parc.Name = parcDto.Name;
             if(parcDto.Location != null)  parc.Location = parcDto.Location;
             _context.Parcs.Update(parc);
-            // _context.SaveChanges();
+            _context.SaveChanges();
             return parc;
         }
         return null;
