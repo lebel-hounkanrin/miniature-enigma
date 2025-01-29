@@ -79,6 +79,7 @@ builder.Services.AddScoped<SalleService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TicketService>();
 
 var app = builder.Build();
 
