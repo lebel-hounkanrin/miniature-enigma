@@ -101,7 +101,7 @@ namespace parc.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("UpdatedAp")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -152,6 +152,52 @@ namespace parc.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DeviceGenralInfos");
+                });
+
+            modelBuilder.Entity("parc.Models.DeviceTechnicalSpecs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FreeRamSize")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FreeStorage")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("GraphicsCard")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OperatingSystem")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Processor")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TotalRamSize")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TotalStorage")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId")
+                        .IsUnique();
+
+                    b.ToTable("DeviceTechnicalSpecs");
                 });
 
             modelBuilder.Entity("parc.Models.Parc", b =>
@@ -229,6 +275,15 @@ namespace parc.Migrations
                     b.Navigation("Salle");
                 });
 
+            modelBuilder.Entity("parc.Models.DeviceTechnicalSpecs", b =>
+                {
+                    b.HasOne("parc.Models.DeviceGenralInfo", "Device")
+                        .WithOne("TechnicalSpecs")
+                        .HasForeignKey("parc.Models.DeviceTechnicalSpecs", "DeviceId");
+
+                    b.Navigation("Device");
+                });
+
             modelBuilder.Entity("parc.Models.Salle", b =>
                 {
                     b.HasOne("parc.Models.Parc", "Parc")
@@ -238,6 +293,12 @@ namespace parc.Migrations
                         .IsRequired();
 
                     b.Navigation("Parc");
+                });
+
+            modelBuilder.Entity("parc.Models.DeviceGenralInfo", b =>
+                {
+                    b.Navigation("TechnicalSpecs")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("parc.Models.Parc", b =>

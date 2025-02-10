@@ -11,6 +11,7 @@ public class AppDbContext: DbContext
     public DbSet<Salle> Salles { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<DeviceGenralInfo> DeviceGenralInfos { get; set; }
+    public DbSet<DeviceTechnicalSpecs> DeviceTechnicalSpecs { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,5 +25,7 @@ public class AppDbContext: DbContext
             );
         modelBuilder.Entity<Salle>().HasOne(s => s.Parc).WithMany(p => p.Salles).HasForeignKey(s => s.ParcId);
         modelBuilder.Entity<Device>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
+        modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.TechnicalSpecs).WithOne(t => t.Device)
+            .HasForeignKey<DeviceTechnicalSpecs>(t => t.DeviceId).IsRequired(false);
     }
 }

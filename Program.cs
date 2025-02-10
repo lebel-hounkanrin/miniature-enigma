@@ -78,6 +78,7 @@ builder.Services.AddScoped<ParcService>();
 builder.Services.AddScoped<SalleService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<DeviceGenralInfoService>();
+builder.Services.AddScoped<DeviceTechnicalSpecsService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TicketService>();

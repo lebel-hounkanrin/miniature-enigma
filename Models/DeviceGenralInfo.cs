@@ -12,4 +12,6 @@ public class DeviceGenralInfo
     public DateTime? WarrantyEndDate { get; set; } // Date de fin de garantie
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    public DeviceTechnicalSpecs? TechnicalSpecs { get; set; }
 }
