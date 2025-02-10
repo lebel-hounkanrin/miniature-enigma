@@ -33,4 +33,38 @@ public class DeviceTechnicalSpecsController: ControllerBase
             throw;
         }
     }
+    
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeviceTechnicalSpecs))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetOne(int id)
+    {
+        try
+        {
+            return Ok(_service.GetById(id));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeviceTechnicalSpecs))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Update(int id, DeviceTechnicalSpecs data)
+    {
+        try
+        {
+            return Ok(_service.Update(id, data));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }
