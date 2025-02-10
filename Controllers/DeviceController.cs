@@ -54,4 +54,21 @@ public class DeviceController: ControllerBase
         await _deviceService.Update(id, _device);
         return Ok(new { message = $" Todo Item  with id {id} successfully updated" });
     }
+    
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<bool> Delete(int id)
+    {
+        try
+        {
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return true;
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to delete device", error = e.Message });
+        }
+    }
 }
