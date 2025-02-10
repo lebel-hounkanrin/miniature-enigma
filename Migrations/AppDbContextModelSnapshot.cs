@@ -143,7 +143,7 @@ namespace parc.Migrations
                     b.Property<string>("SerialNumber")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAp")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("WarrantyEndDate")

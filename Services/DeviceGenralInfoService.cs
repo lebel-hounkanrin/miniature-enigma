@@ -25,4 +25,36 @@ public class DeviceGenralInfoService
             throw;
         }
     }
+
+    public List<DeviceGenralInfo> GetAll()
+    {
+        return _context.DeviceGenralInfos.ToList();
+    }
+
+    public DeviceGenralInfo GetById(int id)
+    {
+        return _context.DeviceGenralInfos.Find(id);
+    }
+
+    public DeviceGenralInfo Update(int id, DeviceGenralInfo data)
+    {
+        var deviceGenralInfo = _context.DeviceGenralInfos.Find(id);
+        if (deviceGenralInfo != null)
+        {
+            deviceGenralInfo.Name = data.Name ?? deviceGenralInfo.Name;
+            deviceGenralInfo.DeviceType = data.DeviceType ?? deviceGenralInfo.DeviceType;
+            deviceGenralInfo.Brand = data.Brand ?? deviceGenralInfo.Brand;
+            deviceGenralInfo.Model = data.Model ?? deviceGenralInfo.Model;
+            deviceGenralInfo.SerialNumber = data.SerialNumber ?? deviceGenralInfo.SerialNumber;
+            deviceGenralInfo.PurchaseDate = data.PurchaseDate ?? deviceGenralInfo.PurchaseDate;
+            deviceGenralInfo.WarrantyEndDate = data.WarrantyEndDate ?? deviceGenralInfo.WarrantyEndDate;
+            deviceGenralInfo.UpdatedAt = DateTime.UtcNow;;
+            
+            var updatedData = _context.DeviceGenralInfos.Update(deviceGenralInfo);
+            _context.SaveChanges();
+            return updatedData.Entity;
+        }
+        
+        return null;
+    }
 }

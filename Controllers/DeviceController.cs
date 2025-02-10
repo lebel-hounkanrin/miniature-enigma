@@ -31,7 +31,7 @@ public class DeviceController: ControllerBase
         return _deviceService.Add(device);
     }
     
-    [HttpGet(Name = "Get all devices")]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Device>))]
     [Produces(MediaTypeNames.Application.Json)]
     public ActionResult<List<Device>> Get()

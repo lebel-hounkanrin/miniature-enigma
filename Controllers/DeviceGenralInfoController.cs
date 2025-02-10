@@ -24,7 +24,7 @@ public class DeviceGenralInfoController: ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<Device> Post(DeviceGenralInfo device)
+    public ActionResult<DeviceGenralInfo> Post(DeviceGenralInfo device)
     {
         try
         {
@@ -36,4 +36,67 @@ public class DeviceGenralInfoController: ControllerBase
             throw;
         }
     }
+    
+    [HttpGet(Name = "Get all devices")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Device>))]
+    [Produces(MediaTypeNames.Application.Json)]
+    public ActionResult<List<DeviceGenralInfo>> Get()
+    {
+        // _logger.LogInformation("Get all parcs for current user");
+        return _deviceGenralInfoService.GetAll();
+    }
+    
+    
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeviceGenralInfo))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Update(int id, DeviceGenralInfo data)
+    {
+        try
+        {
+            return Ok(_deviceGenralInfoService.Update(id, data));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeviceGenralInfo))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetOne(int id)
+    {
+        try
+        {
+           return Ok(_deviceGenralInfoService.GetById(id));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<bool> Delete(int id)
+    {
+        try
+        {
+            CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+            return true;
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new { message = $"An error occurred while trying to delete device", error = e.Message });
+        }
+    }
+
 }
+
