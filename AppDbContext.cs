@@ -10,6 +10,7 @@ public class AppDbContext: DbContext
     public DbSet<Parc> Parcs { get; set; }
     public DbSet<Salle> Salles { get; set; }
     public DbSet<Device> Devices { get; set; }
+    public DbSet<DeviceGenralInfo> DeviceGenralInfos { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
