@@ -45,9 +45,9 @@ public class DeviceNetworkInfoService
             entity.ConnectionType = data.ConnectionType ?? entity.ConnectionType;
             
             entity.UpdatedAt = DateTime.UtcNow;
-            var updatedData = _context.DeviceNetworkInfo.Update(data);
+            // var updatedData = _context.DeviceNetworkInfo.Update(data);
             _context.SaveChanges();
-            return updatedData.Entity;
+            return entity;
         }
         catch (Exception e)
         {

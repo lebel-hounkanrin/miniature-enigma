@@ -45,9 +45,9 @@ public class DeviceTechnicalSpecsService
             entity.GraphicsCard = data.GraphicsCard ?? entity.GraphicsCard;
             
             entity.UpdatedAt = DateTime.UtcNow;
-            var updatedData = _context.DeviceTechnicalSpecs.Update(data);
+            // var updatedData = _context.DeviceTechnicalSpecs.Update(data);
             _context.SaveChanges();
-            return updatedData.Entity;
+            return entity;
         }
         catch (Exception e)
         {
