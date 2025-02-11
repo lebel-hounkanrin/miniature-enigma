@@ -15,4 +15,5 @@ public class DeviceGenralInfo
     
     public DeviceTechnicalSpecs? TechnicalSpecs { get; set; }
     public DeviceNetworkInfo? NetworkInfo { get; set; }
+    public List<DeviceVariable>? DeviceVariables { get; set; }
 }

@@ -13,6 +13,7 @@ public class AppDbContext: DbContext
     public DbSet<DeviceGenralInfo> DeviceGenralInfos { get; set; }
     public DbSet<DeviceTechnicalSpecs> DeviceTechnicalSpecs { get; set; }
     public DbSet<DeviceNetworkInfo> DeviceNetworkInfo { get; set; }
+    public DbSet<DeviceVariable> DeviceVariables { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,8 +28,14 @@ public class AppDbContext: DbContext
         modelBuilder.Entity<Salle>().HasOne(s => s.Parc).WithMany(p => p.Salles).HasForeignKey(s => s.ParcId);
         modelBuilder.Entity<Device>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.TechnicalSpecs).WithOne(t => t.Device)
-            .HasForeignKey<DeviceTechnicalSpecs>(t => t.DeviceId).IsRequired(false);
+            .HasForeignKey<DeviceTechnicalSpecs>(t => t.DeviceId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.NetworkInfo).WithOne(t => t.Device)
-            .HasForeignKey<DeviceNetworkInfo>(t => t.DeviceId).IsRequired(false);
+            .HasForeignKey<DeviceNetworkInfo>(t => t.DeviceId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<DeviceGenralInfo>().HasMany(d => d.DeviceVariables)
+            .WithOne(t => t.Device)
+            .HasForeignKey(t => t.DeviceId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+            
     }
 }

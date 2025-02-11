@@ -240,6 +240,45 @@ namespace parc.Migrations
                     b.ToTable("DeviceTechnicalSpecs");
                 });
 
+            modelBuilder.Entity("parc.Models.DeviceVariable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DiskRead")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DiskWrite")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FreeRamSize")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FreeStorage")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("NetReceive")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("NetSend")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("DeviceVariables");
+                });
+
             modelBuilder.Entity("parc.Models.Parc", b =>
                 {
                     b.Property<int>("Id")
@@ -319,7 +358,8 @@ namespace parc.Migrations
                 {
                     b.HasOne("parc.Models.DeviceGenralInfo", "Device")
                         .WithOne("NetworkInfo")
-                        .HasForeignKey("parc.Models.DeviceNetworkInfo", "DeviceId");
+                        .HasForeignKey("parc.Models.DeviceNetworkInfo", "DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Device");
                 });
@@ -328,7 +368,18 @@ namespace parc.Migrations
                 {
                     b.HasOne("parc.Models.DeviceGenralInfo", "Device")
                         .WithOne("TechnicalSpecs")
-                        .HasForeignKey("parc.Models.DeviceTechnicalSpecs", "DeviceId");
+                        .HasForeignKey("parc.Models.DeviceTechnicalSpecs", "DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Device");
+                });
+
+            modelBuilder.Entity("parc.Models.DeviceVariable", b =>
+                {
+                    b.HasOne("parc.Models.DeviceGenralInfo", "Device")
+                        .WithMany("DeviceVariables")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Device");
                 });
@@ -346,6 +397,8 @@ namespace parc.Migrations
 
             modelBuilder.Entity("parc.Models.DeviceGenralInfo", b =>
                 {
+                    b.Navigation("DeviceVariables");
+
                     b.Navigation("NetworkInfo");
 
                     b.Navigation("TechnicalSpecs");
