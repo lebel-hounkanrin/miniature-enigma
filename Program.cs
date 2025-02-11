@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using parc;
 using parc.Helpers;
 using parc.models;
+using parc.Models;
 using parc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,6 +80,7 @@ builder.Services.AddScoped<SalleService>();
 builder.Services.AddScoped<DeviceService>();
 builder.Services.AddScoped<DeviceGenralInfoService>();
 builder.Services.AddScoped<DeviceTechnicalSpecsService>();
+builder.Services.AddScoped<DeviceNetworkInfoService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TicketService>();

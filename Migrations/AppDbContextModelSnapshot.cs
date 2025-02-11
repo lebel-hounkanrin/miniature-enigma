@@ -154,6 +154,46 @@ namespace parc.Migrations
                     b.ToTable("DeviceGenralInfos");
                 });
 
+            modelBuilder.Entity("parc.Models.DeviceNetworkInfo", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("ConnectionType")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Hostname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MacAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Network")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("DeviceId")
+                        .IsUnique();
+
+                    b.ToTable("DeviceNetworkInfo");
+                });
+
             modelBuilder.Entity("parc.Models.DeviceTechnicalSpecs", b =>
                 {
                     b.Property<int>("Id")
@@ -275,6 +315,15 @@ namespace parc.Migrations
                     b.Navigation("Salle");
                 });
 
+            modelBuilder.Entity("parc.Models.DeviceNetworkInfo", b =>
+                {
+                    b.HasOne("parc.Models.DeviceGenralInfo", "Device")
+                        .WithOne("NetworkInfo")
+                        .HasForeignKey("parc.Models.DeviceNetworkInfo", "DeviceId");
+
+                    b.Navigation("Device");
+                });
+
             modelBuilder.Entity("parc.Models.DeviceTechnicalSpecs", b =>
                 {
                     b.HasOne("parc.Models.DeviceGenralInfo", "Device")
@@ -297,8 +346,9 @@ namespace parc.Migrations
 
             modelBuilder.Entity("parc.Models.DeviceGenralInfo", b =>
                 {
-                    b.Navigation("TechnicalSpecs")
-                        .IsRequired();
+                    b.Navigation("NetworkInfo");
+
+                    b.Navigation("TechnicalSpecs");
                 });
 
             modelBuilder.Entity("parc.Models.Parc", b =>

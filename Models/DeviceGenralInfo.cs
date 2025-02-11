@@ -14,4 +14,5 @@ public class DeviceGenralInfo
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public DeviceTechnicalSpecs? TechnicalSpecs { get; set; }
+    public DeviceNetworkInfo? NetworkInfo { get; set; }
 }
