@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 namespace parc.Models;
 
 public class DeviceGenralInfo
@@ -10,6 +13,12 @@ public class DeviceGenralInfo
     public string? SerialNumber { get; set; } // Numéro de série
     public DateTime? PurchaseDate { get; set; } // Date d'achat
     public DateTime? WarrantyEndDate { get; set; } // Date de fin de garantie
+    
+    [Required]
+    public int SalleId { get; set; }
+    
+    [JsonIgnore]
+    public Salle? Salle { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
