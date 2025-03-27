@@ -18,4 +18,6 @@ public class Reservation
     public bool IsRoomReservation { get; set; }
     public bool? isConfirmed { get; set; }  = false;
     public bool? Status { get; set; } = false;
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

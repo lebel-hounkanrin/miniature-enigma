@@ -97,7 +97,20 @@ public class ReservationsController: ControllerBase
         }
     }
     
-    
+    [HttpGet]
+    public async Task<ActionResult<IQueryable<Reservation>>> GetAllReservations()
+    {
+        var reservations = await _context.Reservations
+            .OrderByDescending(r => r.CreatedAt)  
+            .ToListAsync();
+
+        if (reservations == null || reservations.Count == 0)
+        {
+            return NotFound("Aucune réservation trouvée.");
+        }
+
+        return Ok(reservations);
+    }
     
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Reservation))]
