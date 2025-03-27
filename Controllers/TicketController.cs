@@ -49,16 +49,21 @@ public class TicketController: ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     public ActionResult<List<Salle>> Get()
     {
-        return Ok();
+        return Ok(ticketService.GetAllTicketsAsync());
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Salle))]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<Ticket> Get(int id)
+    public async Task<ActionResult<Ticket>> Get(int id)
     {
-        return Ok();
+        var ticket = await ticketService.GetTicketByIdAsync(id);
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+        return Ok(ticket);
     }
     
     [HttpDelete("{id}")]
@@ -76,6 +81,35 @@ public class TicketController: ControllerBase
         {
             return StatusCode(500, new { message = $"An error occurred while trying to delete ticket", error = e.Message });
         }
+    }
+    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateTicket(int id, [FromBody] Ticket ticket)
+    {
+        if (ticket == null || id != ticket.Id)
+        {
+            return BadRequest();
+        }
+
+        var updatedTicket = await ticketService.UpdateTicketAsync(id, ticket);
+        if (updatedTicket == null)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteTicket(int id)
+    {
+        var success = await ticketService.DeleteTicketAsync(id);
+        if (!success)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
     }
 
     
