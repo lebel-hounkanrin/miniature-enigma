@@ -24,12 +24,13 @@ public class TicketController: ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public ActionResult<Ticket> Post(Ticket ticket)
+    public async Task<ActionResult<Ticket>> Post(Ticket ticket)
     {
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-            return ticketService.Add(ticket, currentUser);
+            var createdTicket = await ticketService.Add(ticket, currentUser);
+            return Ok(createdTicket);
         }
         catch (UnauthorizedAccessException)
         {

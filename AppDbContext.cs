@@ -15,6 +15,7 @@ public class AppDbContext: DbContext
     public DbSet<DeviceNetworkInfo> DeviceNetworkInfo { get; set; }
     public DbSet<DeviceVariable> DeviceVariables { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
