@@ -16,6 +16,7 @@ public class AppDbContext: DbContext
     public DbSet<DeviceVariable> DeviceVariables { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

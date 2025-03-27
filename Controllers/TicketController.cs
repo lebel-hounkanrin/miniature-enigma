@@ -70,12 +70,18 @@ public class TicketController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<bool> Delete(int id)
+    public async Task<ActionResult<bool>> Delete(int id)
     {
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-            return true;
+            var success = await ticketService.DeleteTicketAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
         catch (Exception e)
         {
@@ -99,18 +105,4 @@ public class TicketController: ControllerBase
 
         return NoContent();
     }
-    
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTicket(int id)
-    {
-        var success = await ticketService.DeleteTicketAsync(id);
-        if (!success)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
-    }
-
-    
 }
