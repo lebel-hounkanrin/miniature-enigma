@@ -24,12 +24,13 @@ public class TicketController: ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public ActionResult<Ticket> Post(Ticket ticket)
+    public async Task<ActionResult<Ticket>> Post(Ticket ticket)
     {
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-            return ticketService.Add(ticket, currentUser);
+            var createdTicket = await ticketService.Add(ticket, currentUser);
+            return Ok(createdTicket);
         }
         catch (UnauthorizedAccessException)
         {
@@ -48,34 +49,60 @@ public class TicketController: ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     public ActionResult<List<Salle>> Get()
     {
-        return Ok();
+        return Ok(ticketService.GetAllTicketsAsync());
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Salle))]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<Ticket> Get(int id)
+    public async Task<ActionResult<Ticket>> Get(int id)
     {
-        return Ok();
+        var ticket = await ticketService.GetTicketByIdAsync(id);
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+        return Ok(ticket);
     }
     
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<bool> Delete(int id)
+    public async Task<ActionResult<bool>> Delete(int id)
     {
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-            return true;
+            var success = await ticketService.DeleteTicketAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
         catch (Exception e)
         {
             return StatusCode(500, new { message = $"An error occurred while trying to delete ticket", error = e.Message });
         }
     }
-
     
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateTicket(int id, [FromBody] Ticket ticket)
+    {
+        if (ticket == null || id != ticket.Id)
+        {
+            return BadRequest();
+        }
+
+        var updatedTicket = await ticketService.UpdateTicketAsync(id, ticket);
+        if (updatedTicket == null)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }

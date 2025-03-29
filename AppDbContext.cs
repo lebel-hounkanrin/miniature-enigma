@@ -15,6 +15,8 @@ public class AppDbContext: DbContext
     public DbSet<DeviceNetworkInfo> DeviceNetworkInfo { get; set; }
     public DbSet<DeviceVariable> DeviceVariables { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,7 +28,9 @@ public class AppDbContext: DbContext
             v => (UserRole)Enum.Parse(typeof(UserRole), v)
             );
         modelBuilder.Entity<Salle>().HasOne(s => s.Parc).WithMany(p => p.Salles).HasForeignKey(s => s.ParcId);
-        modelBuilder.Entity<Device>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
+        //modelBuilder.Entity<Device>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
+        modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
+        modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.TechnicalSpecs).WithOne(t => t.Device)
             .HasForeignKey<DeviceTechnicalSpecs>(t => t.DeviceId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.NetworkInfo).WithOne(t => t.Device)

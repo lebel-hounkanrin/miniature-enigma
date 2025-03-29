@@ -1,3 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Extensions;
+using parc.Models.shared;
+
 namespace parc.Models;
 
 public class DeviceGenralInfo
@@ -10,6 +15,14 @@ public class DeviceGenralInfo
     public string? SerialNumber { get; set; } // Numéro de série
     public DateTime? PurchaseDate { get; set; } // Date d'achat
     public DateTime? WarrantyEndDate { get; set; } // Date de fin de garantie
+    
+    [MaxLength(100)] public string Status { get; set; } = DeviceStatus.Active.GetDisplayName();
+    
+    [Required]
+    public int SalleId { get; set; }
+    
+    [JsonIgnore]
+    public Salle? Salle { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     

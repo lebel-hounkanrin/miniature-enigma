@@ -23,7 +23,8 @@ public class Salle
     [JsonIgnore]
     public Parc? Parc { get; set; }
     
-    [SwaggerSchema(ReadOnly = true)] public ICollection<Device> Devices { get; set; } = new List<Device>();
+    //[SwaggerSchema(ReadOnly = true)] public ICollection<Device> Devices { get; set; } = new List<Device>();
+    [SwaggerSchema(ReadOnly = true)] public ICollection<DeviceGenralInfo> Devices { get; set; } = new List<DeviceGenralInfo>();
     
     public bool IsActive { get; set; } = true;
     

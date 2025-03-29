@@ -10,12 +10,12 @@ public class DeviceTechnicalSpecs
     public DeviceGenralInfo? Device { get; set; }
     public string? OperatingSystem { get; set; } // Système d'exploitation
     public string? Processor { get; set; } // Processeur (modèle et spécifications)
-    public int? TotalRamSize { get; set; } // Taille de la RAM (en Go)
+    public string? TotalRamSize { get; set; } // Taille de la RAM (en Go)
     public string? TotalStorage { get; set; } // Type et taille du stockage (SSD, HDD, etc.)
     public string? GraphicsCard { get; set; } // Carte graphique
     
-    public int? FreeRamSize { get; set; }
-    public int? FreeStorage { get; set; }
+    public string? FreeRamSize { get; set; }
+    public string? FreeStorage { get; set; }
     
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
