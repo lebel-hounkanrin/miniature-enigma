@@ -21,14 +21,20 @@ public class TicketService
         return ticket;
     }
     
-    public async Task<IEnumerable<Ticket>> GetAllTicketsAsync()
+    public List<Ticket> GetAllTicketsAsync()
     {
-        return await _context.Tickets.ToListAsync();
+        return  _context.Tickets.ToList();
     }
     
     public async Task<Ticket> GetTicketByIdAsync(int id)
     {
         return await _context.Tickets.FindAsync(id);
+    }
+    
+    public  List<Ticket> GetTicketByDeviceIdAsync(int deviceId)
+    {
+        return  _context.Tickets.Where(ticket => ticket.DeviceId == deviceId).ToList();
+        //return await _context.Tickets.Where(ticket => ticket.DeviceId == deviceId).ToListAsync();
     }
     
     public async Task<Ticket> UpdateTicketAsync(int id, Ticket ticket)

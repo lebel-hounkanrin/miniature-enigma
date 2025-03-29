@@ -45,26 +45,26 @@ public class TicketController: ControllerBase
     }
 
     [HttpGet(Name = "Get all tickets")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Parc>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Ticket>))]
     [Produces(MediaTypeNames.Application.Json)]
-    public ActionResult<List<Salle>> Get()
+    public ActionResult<List<Ticket>> Get([FromQuery] int? deviceId)
     {
+        if (deviceId.HasValue)
+        {
+            return Ok(ticketService.GetTicketByDeviceIdAsync(deviceId.Value));
+        }
+        
         return Ok(ticketService.GetAllTicketsAsync());
     }
 
-    [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Salle))]
-    [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Ticket>> Get(int id)
-    {
-        var ticket = await ticketService.GetTicketByIdAsync(id);
-        if (ticket == null)
-        {
-            return NotFound();
-        }
-        return Ok(ticket);
-    }
+    // [HttpGet("by-device", Name = "Get ticket by device id")]
+    // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Ticket>))]
+    // [Produces(MediaTypeNames.Application.Json)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public ActionResult<List<Ticket>> GetByDeviceId([FromQuery] int deviceId)
+    // {
+    //     return Ok(ticketService.GetTicketByDeviceIdAsync(deviceId));
+    // }
     
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]

@@ -15,6 +15,8 @@ public class DeviceVariable
     public string? NetSend { get; set; }
     public string? NetReceive { get; set; }
     
+   // public int? BatteryLevel { get; set; }
+    
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     [JsonIgnore]

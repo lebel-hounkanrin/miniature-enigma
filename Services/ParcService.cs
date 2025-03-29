@@ -30,9 +30,12 @@ public class ParcService
 
     public Parc GetById(int id, CustomUser user)
     {
-        if(user.Role == UserRole.SuperAdmin)
-            return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
-        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive).Include(p => p.Salles).FirstOrDefault();
+        //if(user.Role == UserRole.SuperAdmin)
+           // return _context.Parcs.AsNoTracking().SingleOrDefault(x => x.Id == id);
+        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.Id == id && p.IsActive)
+            .Include(p => p.Salles)
+            .ThenInclude(s => s.Devices)
+            .FirstOrDefault();
     }
 
     public Parc Update(int id, UpdateParcDto? parcDto, CustomUser user)

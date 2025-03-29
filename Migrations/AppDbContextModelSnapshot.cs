@@ -408,6 +408,9 @@ namespace parc.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 

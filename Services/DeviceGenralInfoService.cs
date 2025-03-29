@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using parc.Models;
 
 namespace parc.Services;
@@ -33,7 +34,12 @@ public class DeviceGenralInfoService
 
     public DeviceGenralInfo GetById(int id)
     {
-        return _context.DeviceGenralInfos.Find(id);
+        return _context.DeviceGenralInfos.Where(s => s.Id == id)
+            .Include(d => d.TechnicalSpecs)
+            .Include(d => d.NetworkInfo)
+            .Include(d => d.DeviceVariables)
+            .FirstOrDefault();
+        //return _context.DeviceGenralInfos.Find(id);
     }
 
     public DeviceGenralInfo Update(int id, DeviceGenralInfo data)
