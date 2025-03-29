@@ -30,6 +30,7 @@ public class AppDbContext: DbContext
         modelBuilder.Entity<Salle>().HasOne(s => s.Parc).WithMany(p => p.Salles).HasForeignKey(s => s.ParcId);
         //modelBuilder.Entity<Device>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
+        modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.Salle).WithMany(s => s.Devices).HasForeignKey(d => d.SalleId);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.TechnicalSpecs).WithOne(t => t.Device)
             .HasForeignKey<DeviceTechnicalSpecs>(t => t.DeviceId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<DeviceGenralInfo>().HasOne(d => d.NetworkInfo).WithOne(t => t.Device)
