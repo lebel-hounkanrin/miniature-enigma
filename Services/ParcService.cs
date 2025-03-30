@@ -25,7 +25,9 @@ public class ParcService
     {
         if(user.Role == UserRole.SuperAdmin)
             return _context.Parcs.AsNoTracking().Include(s => s.Salles).ThenInclude(s => s.Devices).ToList();
-        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.IsActive).ToList();
+        return _context.Parcs.Where(p => p.OwnerId == user.Id && p.IsActive)
+            .Include(s => s.Salles).ThenInclude(s => s.Devices)
+            .AsNoTracking().ToList();
     }
 
     public Parc GetById(int id, CustomUser user)

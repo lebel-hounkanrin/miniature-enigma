@@ -28,9 +28,12 @@ public class DeviceGenralInfoService
         }
     }
 
-    public List<DeviceGenralInfo> GetAll()
+    public List<DeviceGenralInfo> GetAll(CustomUser user)
     {
-        return _context.DeviceGenralInfos.ToList();
+        return _context.DeviceGenralInfos
+            .Where(d => _context.Salles.Any(s => 
+                _context.Parcs.Any(p => p.OwnerId == user.Id && p.Id == s.ParcId) && s.Id == d.SalleId))
+            .ToList();
     }
 
     public DeviceGenralInfo GetById(int id)

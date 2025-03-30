@@ -23,10 +23,13 @@ public class SalleService
     
     public List<Salle> GetAll(CustomUser user)
     {
-        var parc = _context.Parcs.Where(p => p.OwnerId == user.Id);
-        var salles = _context.Salles.Where(
-                s => parc.Any(p => p.Id == s.Id)).AsNoTracking().ToList();
-        return salles;
+        return _context.Salles
+            .Where(s => _context.Parcs.Any(p => p.OwnerId == user.Id && p.Id == s.ParcId))
+            .ToList();
+        // var parc = _context.Parcs.Where(p => p.OwnerId == user.Id);
+        // var salles = _context.Salles.Where(
+        //         s => parc.Any(p => p.Id == s.Id)).AsNoTracking().ToList();
+        // return salles;
     }
     
     public List<Salle> GetAllForParc(CustomUser user, int parcId)
