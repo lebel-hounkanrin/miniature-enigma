@@ -110,7 +110,7 @@ public class SalleController: ControllerBase
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-            return true;
+            return Ok( _salleService.DeleteSalleAsync(id, currentUser));
         }
         catch (Exception e)
         {

@@ -85,12 +85,12 @@ public class DeviceGenralInfoController: ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<bool> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
             CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
-            return true;
+            return Ok(_deviceGenralInfoService.DeleteAsync(id, currentUser));
         }
         catch (Exception e)
         {

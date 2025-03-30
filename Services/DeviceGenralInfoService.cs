@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using parc.Models;
+using parc.Models.shared;
 
 namespace parc.Services;
 
@@ -62,5 +63,39 @@ public class DeviceGenralInfoService
         }
         
         return null;
+    }
+    
+    public async Task<bool> DeleteAsync(int id, CustomUser user)
+    {
+        try
+        {
+            var device = await _context.DeviceGenralInfos.FindAsync(id);
+            if (device == null) return false;
+
+            if (user.Role == UserRole.SuperAdmin)
+            {
+                _context.DeviceGenralInfos.Remove(device);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            // Vérifier si l'utilisateur est propriétaire du parc contenant le device
+            bool isOwner = await _context.Parcs
+                .Where(p => p.OwnerId == user.Id)
+                .SelectMany(p => p.Salles)
+                .SelectMany(s => s.Devices)
+                .AnyAsync(d => d.Id == id);
+
+            if (!isOwner) return false;
+
+            _context.DeviceGenralInfos.Remove(device);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Erreur lors de la suppression du device {id}: {e.Message}");
+            return false;
+        }
     }
 }

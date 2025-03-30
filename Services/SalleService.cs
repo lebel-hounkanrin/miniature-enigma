@@ -91,4 +91,38 @@ public class SalleService
             return false;
         }
     }
+    
+    public async Task<bool> DeleteSalleAsync(int id, CustomUser user)
+    {
+        try
+        {
+            var salle = await _context.Salles.FindAsync(id);
+            if (salle == null) return false;
+
+            if (user.Role == UserRole.SuperAdmin)
+            {
+                _context.Salles.Remove(salle);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            // Vérifier si l'utilisateur est propriétaire du parc contenant la salle
+            bool isOwner = await _context.Parcs
+                .Where(p => p.OwnerId == user.Id)
+                .SelectMany(p => p.Salles)
+                .AnyAsync(s => s.Id == id);
+
+            if (!isOwner) return false;
+
+            _context.Salles.Remove(salle);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Erreur lors de la suppression de la salle {id}: {e.Message}");
+            return false;
+        }
+    }
+
 }
