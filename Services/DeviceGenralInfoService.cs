@@ -68,32 +68,39 @@ public class DeviceGenralInfoService
         return null;
     }
     
-    public async Task<bool> DeleteAsync(int id, CustomUser user)
+    public  bool DeleteAsync(int id, CustomUser user)
     {
+        
         try
         {
-            var device = await _context.DeviceGenralInfos.FindAsync(id);
-            if (device == null) return false;
-
-            if (user.Role == UserRole.SuperAdmin)
-            {
-                _context.DeviceGenralInfos.Remove(device);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
-            // Vérifier si l'utilisateur est propriétaire du parc contenant le device
-            bool isOwner = await _context.Parcs
-                .Where(p => p.OwnerId == user.Id)
-                .SelectMany(p => p.Salles)
-                .SelectMany(s => s.Devices)
-                .AnyAsync(d => d.Id == id);
-
-            if (!isOwner) return false;
-
+            var device = _context.DeviceGenralInfos
+                .FirstOrDefault(d => _context.Salles.Any(s => 
+                    _context.Parcs.Any(p => p.OwnerId == user.Id && p.Id == s.ParcId) && s.Id == d.SalleId && d.Id == id));
+            if(device == null) return false;
             _context.DeviceGenralInfos.Remove(device);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return true;
+            // var device = await _context.DeviceGenralInfos.FindAsync(id);
+            // if (device == null) return false;
+            //
+            // if (user.Role == UserRole.SuperAdmin)
+            // {
+            //     _context.DeviceGenralInfos.Remove(device);
+            //     await _context.SaveChangesAsync();
+            //     return true;
+            // }
+            //
+            // bool isOwner = await _context.Parcs
+            //     .Where(p => p.OwnerId == user.Id)
+            //     .SelectMany(p => p.Salles)
+            //     .SelectMany(s => s.Devices)
+            //     .AnyAsync(d => d.Id == id);
+            //
+            // if (!isOwner) return false;
+            //
+            // _context.DeviceGenralInfos.Remove(device);
+            // await _context.SaveChangesAsync();
+            // return true;
         }
         catch (Exception e)
         {

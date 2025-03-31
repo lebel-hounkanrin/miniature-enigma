@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
+using parc.Helpers;
 using parc.Models;
 using parc.Services;
 
@@ -7,6 +8,8 @@ namespace parc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(requiredRole: "ParcAdmin")]
+
 public class DeviceGenralInfoController: ControllerBase
 {
     private readonly ILogger<DeviceGenralInfoController> _logger;
