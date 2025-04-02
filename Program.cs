@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using parc;
 using parc.Helpers;
+using parc.Hubs;
 using parc.models;
 using parc.Models;
 using parc.Services;
@@ -9,9 +10,9 @@ using parc.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -87,6 +88,8 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TicketService>();
 
 var app = builder.Build();
+
+app.MapHub<CommandHub>("/commandHub");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
