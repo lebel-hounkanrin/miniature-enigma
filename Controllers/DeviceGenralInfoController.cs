@@ -43,7 +43,7 @@ public class DeviceGenralInfoController: ControllerBase
     [HttpGet(Name = "Get all devices")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Device>))]
     [Produces(MediaTypeNames.Application.Json)]
-    public ActionResult<List<DeviceGenralInfo>> Get()
+    public ActionResult<List<DeviceGenralInfo>> Get(int? parcId)
     {
         CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
         // _logger.LogInformation("Get all parcs for current user");
