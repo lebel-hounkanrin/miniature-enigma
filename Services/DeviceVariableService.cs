@@ -25,6 +25,20 @@ public class DeviceVariableService
         }
     }
     
+    public List<DeviceVariable> GetAll(int deviceId)
+    {
+        try
+        {
+            return _context.DeviceVariables.Where(x => x.DeviceId == deviceId).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
+    }
+    
     public DeviceVariable GetById(int id)
     {
         return _context.DeviceVariables.Find(id);
