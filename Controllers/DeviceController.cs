@@ -8,9 +8,9 @@ using parc.Services;
 namespace parc.Controllers;
 
 
-[ApiController]
-[Route("[controller]")]
-[Authorize(requiredRole: "ParcAdmin")]
+// [ApiController]
+// [Route("[controller]")]
+// [Authorize(requiredRole: "ParcAdmin")]
 
 public class DeviceController: ControllerBase
 {
@@ -24,29 +24,29 @@ public class DeviceController: ControllerBase
         _deviceService = deviceService;
     }
     
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Device))]
-    [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    // [HttpPost]
+    // [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Device))]
+    // [Produces(MediaTypeNames.Application.Json)]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Device> Post(Device device)
     {
         return _deviceService.Add(device);
     }
     
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Device>))]
-    [Produces(MediaTypeNames.Application.Json)]
+    // [HttpGet]
+    // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Device>))]
+    // [Produces(MediaTypeNames.Application.Json)]
     public ActionResult<List<Device>> Get()
     {
         // _logger.LogInformation("Get all parcs for current user");
         return _deviceService.GetAll();
     }
     
-    [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Device))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    // [HttpPut("{id}")]
+    // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Device))]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Update(int id, Device _device)
     {
         var device = _deviceService.GetById(id);
@@ -58,10 +58,10 @@ public class DeviceController: ControllerBase
         return Ok(new { message = $" Todo Item  with id {id} successfully updated" });
     }
     
-    [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    // [HttpDelete("{id}")]
+    // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+    // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<bool> Delete(int id)
     {
         try

@@ -34,6 +34,16 @@ public class DeviceVariableController: ControllerBase
             throw;
         }
     }
+    
+    [HttpGet(Name = "Get all devices variables")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DeviceVariable>))]
+    [Produces(MediaTypeNames.Application.Json)]
+    public ActionResult<List<DeviceVariable>> Get(int parcId)
+    {
+        CustomUser currentUser = HttpContext.Items["User"] as CustomUser;
+        // _logger.LogInformation("Get all parcs for current user");
+        return _service.GetAll(parcId);
+    }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeviceVariable))]
