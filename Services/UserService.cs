@@ -23,7 +23,7 @@ public class UserService
     
     public CustomUser Add(CustomUser user)
     {
-        user.Role = UserRole.SuperAdmin;
+        user.Role = UserRole.ParcAdmin;
         _context.CustomUsers.Add(user);
         _context.SaveChanges();
         return user;
